@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useState } from 'react';
+import GoldPage from './pages/GoldPage';
+import ForexPage from './pages/ForexPage';
+import CryptoPage from './pages/CryptoPage';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [baseCurrency, setBaseCurrency] = useState('USD');
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="app-container">
+        <nav className="navbar">
+          <div className="nav-links">
+            <Link to="/">الذهب والفضة</Link>
+            <Link to="/forex">العملات</Link>
+            <Link to="/crypto">العملات الرقمية</Link>
+          </div>
+          
+          <select 
+            value={baseCurrency} 
+            onChange={(e) => setBaseCurrency(e.target.value)}
+            className="currency-select"
+          >
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="SAR">SAR (﷼)</option>
+            <option value="TRY">TRY (₺)</option>
+          </select>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<GoldPage baseCurrency={baseCurrency} />} />
+          <Route path="/forex" element={<ForexPage baseCurrency={baseCurrency} />} />
+          <Route path="/crypto" element={<CryptoPage baseCurrency={baseCurrency} />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
